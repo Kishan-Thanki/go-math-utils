@@ -28,10 +28,10 @@ To use **Go Math Utils** in your Go project, follow the steps below:
 
 2. Get the **Go Math Utils** package:
    ```bash
-   go get github.com/your-username/go-math-utils
+   go get github.com/Kishan-Thanki/go-math-utils
 
 3. Import the package into your project:
-   import "github.com/your-username/go-math-utils/mathutils"
+   import "github.com/Kishan-Thanki/go-math-utils/mathutils"
 
 ## Usage
 Here’s how you can use the package in your Go project:
