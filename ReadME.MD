@@ -37,12 +37,14 @@ To use **Go Math Utils** in your Go project, follow the steps below:
 Here’s how you can use the package in your Go project:
 
 ### Example Code
-    ```bash
+    
     package main
+
     import (
         "fmt"
         "github.com/your-username/go-math-utils/mathutils"
     )
+
     func main() {
         fmt.Println("GCD of 56 and 98:", mathutils.GCD(56, 98))             // Should print 14
         fmt.Println("LCM of 56 and 98:", mathutils.LCM(56, 98))             // Should print 392
@@ -53,7 +55,7 @@ Here’s how you can use the package in your Go project:
         fmt.Println("Prime factors of 56:", mathutils.PrimeFactors(56))     // Should print [2 2 2 7]
         fmt.Println("Sum of first 5 natural numbers:", mathutils.SumNaturalNumbers(5)) // Should print 15
     }
-    ```
+    
 
 
 ### Functions
