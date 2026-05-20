@@ -1,91 +1,144 @@
-# Go Math Utils
+# go-math-utils
 
-A collection of basic math utilities built in **Go**. This package provides common mathematical functions such as GCD, LCM, factorial, prime number checks, Fibonacci sequence, power, prime factors, and more.
+**A collection of safe, overflow-proof mathematical utilities built in Go.**
+
+[![Go CI](https://github.com/Kishan-Thanki/go-math-utils/actions/workflows/go.yml/badge.svg)](https://github.com/Kishan-Thanki/go-math-utils/actions/workflows/go.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/Kishan-Thanki/go-math-utils.svg)](https://pkg.go.dev/github.com/Kishan-Thanki/go-math-utils)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Kishan-Thanki/go-math-utils)](https://goreportcard.com/report/github.com/Kishan-Thanki/go-math-utils)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/Kishan-Thanki/go-math-utils/blob/main/LICENSE)
+
+This package provides common mathematical functions — GCD, LCM, Factorial, Fibonacci, Power, IsPrime, PrimeFactors, and SumNaturalNumbers — all hardened against **integer overflows**, **division-by-zero**, and **infinite loops** that plague naïve implementations.
 
 ## Features
 
-- **GCD**: Calculate the Greatest Common Divisor of two integers.
-- **LCM**: Calculate the Least Common Multiple of two integers.
-- **Factorial**: Calculate the factorial of a non-negative integer.
-- **IsPrime**: Check if a number is prime.
-- **Fibonacci**: Generate the nth Fibonacci number.
-- **Power**: Calculate `a` raised to the power of `b`.
-- **PrimeFactors**: Find the prime factors of a number.
-- **SumNaturalNumbers**: Calculate the sum of the first `n` natural numbers.
+- **GCD**: Greatest Common Divisor via Euclidean algorithm. Handles negatives and `math.MinInt` safely.
+- **LCM**: Least Common Multiple with division-before-multiply to prevent premature overflow.
+- **Factorial**: Overflow-protected with platform-aware limits (n≤20 on 64-bit, n≤12 on 32-bit).
+- **IsPrime**: Optimized step-by-6 trial division using `i <= n/i` guard to avoid `i*i` overflow on large primes.
+- **Fibonacci**: Safe up to the 92nd term on 64-bit platforms.
+- **Power**: Logarithmic binary exponentiation — O(log b) instead of O(b).
+- **PrimeFactors**: Overflow-safe factorization returning `([]int, error)`.
+- **SumNaturalNumbers**: Uses the Gauss formula with overflow-safe half-term multiplication.
+
+## Performance
+
+All core functions run with **zero allocations** and sub-10ns latency on Apple M2:
+
+| Function             | Time/op   | Allocs/op |
+|----------------------|-----------|-----------|
+| `GCD`                | ~2 ns     | 0         |
+| `LCM`                | ~6 ns     | 0         |
+| `Factorial`          | ~5.5 ns   | 0         |
+| `IsPrime` (997)      | ~9.5 ns   | 0         |
+| `Fibonacci`          | ~14 ns    | 0         |
+| `Power`              | ~8 ns     | 0         |
+| `PrimeFactors`       | ~222 ns   | 4         |
+| `SumNaturalNumbers`  | ~2 ns     | 0         |
 
 ## Technologies Used
 
 - **Go**: The programming language used to build the package.
-- **No external dependencies**: This package is lightweight and relies solely on Go's standard libraries.
+- **No external dependencies**: Relies solely on Go's standard library.
 
 ## Installation
-
-To use **Go Math Utils** in your Go project, follow the steps below:
 
 1. Initialize your Go module (if you haven't already):
    ```bash
    go mod init <your-module-name>
+   ```
 
-2. Get the **Go Math Utils** package:
+2. Get the package:
    ```bash
    go get github.com/Kishan-Thanki/go-math-utils
+   ```
 
-3. Import the package into your project:
+3. Import it:
+   ```go
    import "github.com/Kishan-Thanki/go-math-utils/mathutils"
+   ```
 
 ## Usage
-Here’s how you can use the package in your Go project:
 
-### Example Code
-    
-    package main
+```go
+package main
 
-    import (
-        "fmt"
-        "github.com/your-username/go-math-utils/mathutils"
-    )
+import (
+	"fmt"
 
-    func main() {
-        fmt.Println("GCD of 56 and 98:", mathutils.GCD(56, 98))             // Should print 14
-        fmt.Println("LCM of 56 and 98:", mathutils.LCM(56, 98))             // Should print 392
-        fmt.Println("Factorial of 5:", mathutils.Factorial(5))              // Should print 120
-        fmt.Println("Is 29 prime?", mathutils.IsPrime(29))                  // Should print true
-        fmt.Println("Fibonacci of 6:", mathutils.Fibonacci(6))              // Should print 8
-        fmt.Println("2 raised to the power of 3:", mathutils.Power(2, 3))   // Should print 8
-        fmt.Println("Prime factors of 56:", mathutils.PrimeFactors(56))     // Should print [2 2 2 7]
-        fmt.Println("Sum of first 5 natural numbers:", mathutils.SumNaturalNumbers(5)) // Should print 15
-    }
-    
+	"github.com/Kishan-Thanki/go-math-utils/mathutils"
+)
 
+func main() {
+	// GCD — returns int
+	fmt.Println("GCD of 56 and 98:", mathutils.GCD(56, 98)) // 14
 
-### Functions
-GCD(a, b int) int
-- Returns the Greatest Common Divisor of a and b using the Euclidean algorithm.
+	// LCM — returns (int, error)
+	if lcmVal, err := mathutils.LCM(56, 98); err == nil {
+		fmt.Println("LCM of 56 and 98:", lcmVal) // 392
+	}
 
-LCM(a, b int) int
-- Returns the Least Common Multiple of a and b.
+	// Factorial — returns (int, error)
+	if factVal, err := mathutils.Factorial(5); err == nil {
+		fmt.Println("Factorial of 5:", factVal) // 120
+	}
 
-Factorial(n int) int
-- Returns the factorial of n (n!).
+	// IsPrime — returns bool
+	fmt.Println("Is 29 prime?", mathutils.IsPrime(29)) // true
 
-IsPrime(n int) bool
-- Returns true if n is a prime number, otherwise false.
+	// Fibonacci — returns (int, error)
+	if fibVal, err := mathutils.Fibonacci(6); err == nil {
+		fmt.Println("Fibonacci of 6:", fibVal) // 8
+	}
 
-Fibonacci(n int) int
-- Returns the nth Fibonacci number using an iterative approach.
+	// Power — returns (int, error)
+	if powVal, err := mathutils.Power(2, 3); err == nil {
+		fmt.Println("2 raised to the power of 3:", powVal) // 8
+	}
 
-Power(a, b int) int
-- Returns a raised to the power of b.
+	// PrimeFactors — returns ([]int, error)
+	if factors, err := mathutils.PrimeFactors(56); err == nil {
+		fmt.Println("Prime factors of 56:", factors) // [2 2 2 7]
+	}
 
-PrimeFactors(n int) []int
-- Returns a slice containing the prime factors of n.
+	// SumNaturalNumbers — returns (int, error)
+	if sumVal, err := mathutils.SumNaturalNumbers(5); err == nil {
+		fmt.Println("Sum of first 5 natural numbers:", sumVal) // 15
+	}
+}
+```
 
-SumNaturalNumbers(n int) int
-- Returns the sum of the first n natural numbers.
+## API Reference
 
+| Function | Signature | Notes |
+|---|---|---|
+| `GCD` | `GCD(a, b int) int` | Always non-negative; handles `math.MinInt` |
+| `LCM` | `LCM(a, b int) (int, error)` | Returns `(0, nil)` if either input is 0 |
+| `Factorial` | `Factorial(n int) (int, error)` | Error if n < 0 or result overflows |
+| `IsPrime` | `IsPrime(n int) bool` | Overflow-safe for primes near `math.MaxInt` |
+| `Fibonacci` | `Fibonacci(n int) (int, error)` | Error if n < 0 or result overflows |
+| `Power` | `Power(a, b int) (int, error)` | Error if b < 0 or result overflows |
+| `PrimeFactors` | `PrimeFactors(n int) ([]int, error)` | Error if n ≤ 1 |
+| `SumNaturalNumbers` | `SumNaturalNumbers(n int) (int, error)` | Error if n < 0 or result overflows |
 
-### Tests
-To ensure the correctness of the math utilities, unit tests are provided in the utils_test.go file. You can run the tests using the following command:
-   ```bash
-   go test
-   ```
+## Development
+
+```bash
+# Run all tests
+make test
+
+# Run benchmarks
+make bench
+
+# Check test coverage
+make cover
+
+# Format code
+make fmt
+
+# Vet code
+make vet
+```
+
+## License
+
+[MIT](./LICENSE)

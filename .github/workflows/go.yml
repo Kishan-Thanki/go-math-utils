@@ -1,0 +1,42 @@
+name: Go CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    name: Build, Test, and Bench
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.4'
+          cache: true
+
+      - name: Verify formatting
+        run: |
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then
+            echo "::error::These files are not gofmt-formatted:"
+            echo "$unformatted"
+            exit 1
+          fi
+
+      - name: Verify dependencies
+        run: go mod verify
+
+      - name: Run Vet
+        run: go vet ./...
+
+      - name: Run Tests
+        run: go test -v -race ./...
+
+      - name: Run Benchmarks
+        run: go test -bench=. -benchmem ./...
