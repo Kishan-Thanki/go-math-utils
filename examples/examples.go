@@ -78,4 +78,14 @@ func main() {
 	floatSlice := []float64{1.5, 3.5, 2.5}
 	avgFloat, _ := stats.Average(floatSlice)
 	fmt.Printf("Avg of [1.5, 3.5, 2.5]: %.2f\n", avgFloat)
+
+	// Number Theory
+	phi, _ := integer.EulerTotient(9)
+	divs, _ := integer.Divisors(12)
+	nextP := integer.NextPrime(14)
+	nthP, _ := integer.NthPrime(5)
+	fmt.Printf("EulerTotient(9): %d\n", phi)
+	fmt.Printf("Divisors(12): %v\n", divs)
+	fmt.Printf("NextPrime(14): %d\n", nextP)
+	fmt.Printf("5th Prime: %d\n", nthP)
 }

@@ -274,3 +274,144 @@ func TestGenericTypes(t *testing.T) {
 		t.Errorf("Power(uint64(2), uint64(10)) = (%v, %v); want (1024, nil)", res, err)
 	}
 }
+
+func TestEulerTotient(t *testing.T) {
+	tests := []struct {
+		n      int
+		expect int
+		err    bool
+	}{
+		{9, 6, false},
+		{10, 4, false},
+		{1, 1, false},
+		{0, 0, true},
+		{-5, 0, true},
+	}
+
+	for _, tt := range tests {
+		t.Run("EulerTotient", func(t *testing.T) {
+			res, err := EulerTotient(tt.n)
+			if tt.err && err == nil {
+				t.Errorf("EulerTotient(%d): expected error, got nil", tt.n)
+			} else if !tt.err && err != nil {
+				t.Errorf("EulerTotient(%d): expected no error, got %v", tt.n, err)
+			} else if !tt.err && res != tt.expect {
+				t.Errorf("EulerTotient(%d) = %d; want %d", tt.n, res, tt.expect)
+			}
+		})
+	}
+}
+
+func TestDivisors(t *testing.T) {
+	tests := []struct {
+		n      int
+		expect []int
+		err    bool
+	}{
+		{12, []int{1, 2, 3, 4, 6, 12}, false},
+		{7, []int{1, 7}, false},
+		{-12, []int{1, 2, 3, 4, 6, 12}, false},
+		{0, nil, true},
+	}
+
+	for _, tt := range tests {
+		t.Run("Divisors", func(t *testing.T) {
+			res, err := Divisors(tt.n)
+			if tt.err && err == nil {
+				t.Errorf("Divisors(%d): expected error, got nil", tt.n)
+			} else if !tt.err && err != nil {
+				t.Errorf("Divisors(%d): expected no error, got %v", tt.n, err)
+			} else if !tt.err {
+				if len(res) != len(tt.expect) {
+					t.Errorf("Divisors(%d) = %v; want %v", tt.n, res, tt.expect)
+					return
+				}
+				for i := range res {
+					if res[i] != tt.expect[i] {
+						t.Errorf("Divisors(%d) = %v; want %v", tt.n, res, tt.expect)
+						break
+					}
+				}
+			}
+		})
+	}
+
+	// Test boundary overflow check using int8
+	t.Run("DivisorsInt8Overflow", func(t *testing.T) {
+		var n int8 = -128
+		_, err := Divisors(n)
+		if err == nil {
+			t.Errorf("Divisors(int8(-128)): expected overflow error because divisor 128 overflows int8, got nil")
+		}
+	})
+}
+
+func TestNextPrime(t *testing.T) {
+	tests := []struct {
+		n      int
+		expect int
+	}{
+		{14, 17},
+		{3, 5},
+		{2, 3},
+		{-5, 2},
+		{0, 2},
+	}
+
+	for _, tt := range tests {
+		t.Run("NextPrime", func(t *testing.T) {
+			res := NextPrime(tt.n)
+			if res != tt.expect {
+				t.Errorf("NextPrime(%d) = %d; want %d", tt.n, res, tt.expect)
+			}
+		})
+	}
+
+	// Test panic on overflow using int8
+	t.Run("NextPrimeInt8Panic", func(t *testing.T) {
+		defer func() {
+			if r := recover(); r == nil {
+				t.Errorf("NextPrime(int8(127)) did not panic on overflow")
+			}
+		}()
+		var n int8 = 127
+		_ = NextPrime(n)
+	})
+}
+
+func TestNthPrime(t *testing.T) {
+	tests := []struct {
+		n      int
+		expect int
+		err    bool
+	}{
+		{1, 2, false},
+		{5, 11, false},
+		{10, 29, false},
+		{31, 127, false},
+		{0, 0, true},
+		{-5, 0, true},
+	}
+
+	for _, tt := range tests {
+		t.Run("NthPrime", func(t *testing.T) {
+			res, err := NthPrime(tt.n)
+			if tt.err && err == nil {
+				t.Errorf("NthPrime(%d): expected error, got nil", tt.n)
+			} else if !tt.err && err != nil {
+				t.Errorf("NthPrime(%d): expected no error, got %v", tt.n, err)
+			} else if !tt.err && res != tt.expect {
+				t.Errorf("NthPrime(%d) = %d; want %d", tt.n, res, tt.expect)
+			}
+		})
+	}
+
+	// Test boundary overflow using int8
+	t.Run("NthPrimeInt8Overflow", func(t *testing.T) {
+		var n int8 = 32 // 32nd prime is 131, which overflows int8
+		_, err := NthPrime(n)
+		if err == nil {
+			t.Errorf("NthPrime(int8(32)): expected error, got nil")
+		}
+	})
+}

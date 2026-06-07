@@ -20,6 +20,10 @@ This package provides common mathematical functions — GCD, LCM, Factorial, Fib
 * *PrimeFactors*: Overflow-safe factorization returning `([]int, error)`.
 * *SumNaturalNumbers*: Uses the Gauss formula with overflow-safe half-term multiplication.
 * *Numeric Helpers*: Generic, overflow-aware implementations of `Min`, `Max`, `Clamp`, `Abs`, `Sign`, `IsEven`, and `IsOdd` for generic types.
+* *EulerTotient*: Euler's totient function phi(n) to count coprimes up to n.
+* *Divisors*: Sorted slice of all positive divisors, fully overflow-safe.
+* *NextPrime*: Smallest prime strictly greater than n, with overflow panic boundaries.
+* *NthPrime*: The n-th prime number, with error checking on bounds/overflow.
 
 == Performance
 
@@ -123,6 +127,24 @@ func main() {
 		fmt.Println("Sum of first 5 natural numbers:", sumVal) // 15
 	}
 
+	// EulerTotient — returns generic type
+	if phi, err := integer.EulerTotient(10); err == nil {
+		fmt.Println("Euler totient of 10:", phi) // 4
+	}
+
+	// Divisors — returns generic slice
+	if divs, err := integer.Divisors(12); err == nil {
+		fmt.Println("Divisors of 12:", divs) // [1 2 3 4 6 12]
+	}
+
+	// NextPrime — returns generic type (panics on overflow)
+	fmt.Println("Next prime after 14:", integer.NextPrime(14)) // 17
+
+	// NthPrime — returns generic type
+	if prime, err := integer.NthPrime(5); err == nil {
+		fmt.Println("5th prime:", prime) // 11
+	}
+
 	// Numeric helpers
 	fmt.Println("Min of 10 and 20:", numeric.Min(10, 20)) // 10
 
@@ -146,6 +168,10 @@ func main() {
 | `IsPrime` | `IsPrime[T Integer](n T) bool` | Overflow-safe for primes near bounds of T
 | `Power` | `Power[T Integer](a, b T) (T, error)` | Error if b < 0 or result overflows bounds of T
 | `PrimeFactors` | `PrimeFactors[T Integer](n T) ([]T, error)` | Error if n ≤ 1
+| `EulerTotient` | `EulerTotient[T Integer](n T) (T, error)` | Counts positive integers up to n that are coprime to n; error if n ≤ 0
+| `Divisors` | `Divisors[T Integer](n T) ([]T, error)` | Returns sorted positive divisors of n; error if n == 0 or if divisors overflow T
+| `NextPrime` | `NextPrime[T Integer](n T) T` | Smallest prime strictly greater than n; panics if next prime overflows T
+| `NthPrime` | `NthPrime[T Integer](n T) (T, error)` | Returns the n-th prime; error if n ≤ 0 or if prime overflows T
 |===
 
 === `sequence` Package (Generic)

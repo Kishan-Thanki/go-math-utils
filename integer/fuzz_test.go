@@ -11,7 +11,7 @@ func FuzzGCD(f *testing.F) {
 	f.Fuzz(func(t *testing.T, a, b int) {
 		defer func() {
 			if r := recover(); r != nil {
-				if r != "gcd result overflows int" {
+				if r != "gcd result overflows type" {
 					t.Fatalf("unexpected panic: %v", r)
 				}
 			}
@@ -84,6 +84,78 @@ func FuzzFactorial(f *testing.F) {
 			if res != 1 {
 				t.Fatalf("Factorial(%d) = %d; want 1", n, res)
 			}
+		}
+	})
+}
+
+func FuzzEulerTotient(f *testing.F) {
+	f.Add(9)
+	f.Add(-1)
+	f.Fuzz(func(t *testing.T, n int) {
+		res, err := EulerTotient(n)
+		if err != nil {
+			return
+		}
+		if res <= 0 {
+			t.Fatalf("EulerTotient(%d) = %d is not positive", n, res)
+		}
+	})
+}
+
+func FuzzDivisors(f *testing.F) {
+	f.Add(12)
+	f.Add(0)
+	f.Fuzz(func(t *testing.T, n int) {
+		res, err := Divisors(n)
+		if err != nil {
+			return
+		}
+		for _, d := range res {
+			if d <= 0 {
+				t.Fatalf("Divisors(%d) contains non-positive divisor: %d", n, d)
+			}
+			ua := absUint64(n)
+			if ua%uint64(d) != 0 {
+				t.Fatalf("divisor %d does not divide absolute value of %d", d, n)
+			}
+		}
+	})
+}
+
+func FuzzNextPrime(f *testing.F) {
+	f.Add(14)
+	f.Add(-5)
+	f.Fuzz(func(t *testing.T, n int) {
+		defer func() {
+			if r := recover(); r != nil {
+				if r != "next prime overflows type" {
+					t.Fatalf("unexpected panic in NextPrime: %v", r)
+				}
+			}
+		}()
+		res := NextPrime(n)
+		if res <= n {
+			t.Fatalf("NextPrime(%d) = %d is not strictly greater than n", n, res)
+		}
+		if !isPrimeUint64(uint64(res)) {
+			t.Fatalf("NextPrime(%d) = %d is not prime", n, res)
+		}
+	})
+}
+
+func FuzzNthPrime(f *testing.F) {
+	f.Add(5)
+	f.Add(-1)
+	f.Fuzz(func(t *testing.T, n int) {
+		res, err := NthPrime(n)
+		if err != nil {
+			return
+		}
+		if res < 2 {
+			t.Fatalf("NthPrime(%d) = %d is less than 2", n, res)
+		}
+		if !isPrimeUint64(uint64(res)) {
+			t.Fatalf("NthPrime(%d) = %d is not prime", n, res)
 		}
 	})
 }

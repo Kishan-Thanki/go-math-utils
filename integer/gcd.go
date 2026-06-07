@@ -43,3 +43,22 @@ func GCD[T Integer](a, b T) T {
 	}
 	return T(ua)
 }
+
+// isPrimeUint64 checks if a uint64 number is prime using trial division (step-by-6 wheel).
+func isPrimeUint64(n uint64) bool {
+	if n <= 1 {
+		return false
+	}
+	if n <= 3 {
+		return true
+	}
+	if n%2 == 0 || n%3 == 0 {
+		return false
+	}
+	for i := uint64(5); i <= n/i; i += 6 {
+		if n%i == 0 || n%(i+2) == 0 {
+			return false
+		}
+	}
+	return true
+}
