@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Kishan-Thanki/go-math-utils/integer"
+	"github.com/Kishan-Thanki/go-math-utils/numeric"
 	"github.com/Kishan-Thanki/go-math-utils/sequence"
 )
 
@@ -55,4 +56,13 @@ func main() {
 	} else {
 		fmt.Println("Sum of first 5 natural numbers:", sumVal) // Should print 15
 	}
+
+	// Numeric Helpers
+	fmt.Println("Min of 10 and 20:", numeric.Min(10, 20))           // Should print 10
+	fmt.Println("Max of 3.14 and 2.71:", numeric.Max(3.14, 2.71))   // Should print 3.14
+	fmt.Println("Clamp 25 to [10, 20]:", numeric.Clamp(25, 10, 20)) // Should print 20
+	fmt.Println("Abs of -42:", numeric.Abs(-42))                    // Should print 42
+	fmt.Println("Sign of -15:", numeric.Sign(-15))                  // Should print -1
+	fmt.Println("Is 4 even?", numeric.IsEven(4))                    // Should print true
+	fmt.Println("Is 4 odd?", numeric.IsOdd(4))                      // Should print false
 }

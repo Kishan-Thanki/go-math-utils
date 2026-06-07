@@ -11,7 +11,7 @@ This package provides common mathematical functions — GCD, LCM, Factorial, Fib
 
 == Features
 
-* *GCD*: Greatest Common Divisor via Euclidean algorithm. Handles negatives and `math.MinInt` safely.
+* *GCD*: Greatest Common Divisor via Euclidean algorithm. Handles negatives and `math.MinInt` safely (panics on overflow).
 * *LCM*: Least Common Multiple with division-before-multiply to prevent premature overflow.
 * *Factorial*: Overflow-protected with platform-aware limits (n≤20 on 64-bit, n≤12 on 32-bit).
 * *IsPrime*: Optimized step-by-6 trial division using `i <= n/i` guard to avoid `i*i` overflow on large primes.
@@ -19,6 +19,7 @@ This package provides common mathematical functions — GCD, LCM, Factorial, Fib
 * *Power*: Logarithmic binary exponentiation — O(log b) instead of O(b).
 * *PrimeFactors*: Overflow-safe factorization returning `([]int, error)`.
 * *SumNaturalNumbers*: Uses the Gauss formula with overflow-safe half-term multiplication.
+* *Numeric Helpers*: Generic, overflow-aware implementations of `Min`, `Max`, `Clamp`, `Abs`, `Sign`, `IsEven`, and `IsOdd` for generic types.
 
 == Performance
 
@@ -122,17 +123,40 @@ func main() {
 
 == API Reference
 
+=== `integer` Package
+
 [cols="1,2,2", options="header"]
 |===
 | Function | Signature | Notes
-| `GCD` | `GCD(a, b int) int` | Always non-negative; handles `math.MinInt`
+| `GCD` | `GCD(a, b int) int` | Always non-negative; panics on overflow (e.g. `math.MinInt`, `0`)
 | `LCM` | `LCM(a, b int) (int, error)` | Returns `(0, nil)` if either input is 0
 | `Factorial` | `Factorial(n int) (int, error)` | Error if n < 0 or result overflows
 | `IsPrime` | `IsPrime(n int) bool` | Overflow-safe for primes near `math.MaxInt`
-| `Fibonacci` | `Fibonacci(n int) (int, error)` | Error if n < 0 or result overflows
 | `Power` | `Power(a, b int) (int, error)` | Error if b < 0 or result overflows
 | `PrimeFactors` | `PrimeFactors(n int) ([]int, error)` | Error if n ≤ 1
+|===
+
+=== `sequence` Package
+
+[cols="1,2,2", options="header"]
+|===
+| Function | Signature | Notes
+| `Fibonacci` | `Fibonacci(n int) (int, error)` | Error if n < 0 or result overflows
 | `SumNaturalNumbers` | `SumNaturalNumbers(n int) (int, error)` | Error if n < 0 or result overflows
+|===
+
+=== `numeric` Package (Generic)
+
+[cols="1,2,2", options="header"]
+|===
+| Function | Signature | Notes
+| `Min` | `Min[T cmp.Ordered](a, b T) T` | Returns the minimum of two ordered values
+| `Max` | `Max[T cmp.Ordered](a, b T) T` | Returns the maximum of two ordered values
+| `Clamp` | `Clamp[T cmp.Ordered](val, min, max T) T` | Clamps val between min and max; panics if min > max
+| `Abs` | `Abs[T SignedOrFloat](x T) T` | Absolute value; MinInt wraps due to overflow
+| `Sign` | `Sign[T SignedOrFloat](x T) int` | Returns -1 (negative), 0 (zero), or 1 (positive)
+| `IsEven` | `IsEven[T Integer](x T) bool` | Returns true if x is even
+| `IsOdd` | `IsOdd[T Integer](x T) bool` | Returns true if x is odd
 |===
 
 == Development
