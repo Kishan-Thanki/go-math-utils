@@ -8,26 +8,35 @@ import (
 
 func TestGCD(t *testing.T) {
 	tests := []struct {
-		a, b   int
-		expect int
+		a, b        int
+		expect      int
+		expectPanic bool
 	}{
-		{56, 98, 14},
-		{48, 180, 12},
-		{101, 103, 1},
-		{0, 10, 10},
-		{10, 0, 10},
-		{0, 0, 0},
-		{-56, 98, 14},
-		{56, -98, 14},
-		{-56, -98, 14},
-		{math.MinInt, 0, math.MinInt}, // Returns absolute value represented in int
-		{math.MinInt, 2, 2},
+		{56, 98, 14, false},
+		{48, 180, 12, false},
+		{101, 103, 1, false},
+		{0, 10, 10, false},
+		{10, 0, 10, false},
+		{0, 0, 0, false},
+		{-56, 98, 14, false},
+		{56, -98, 14, false},
+		{-56, -98, 14, false},
+		{math.MinInt, 0, 0, true},
+		{math.MinInt, math.MinInt, 0, true},
+		{math.MinInt, 2, 2, false},
 	}
 
 	for _, tt := range tests {
 		t.Run("GCD", func(t *testing.T) {
+			if tt.expectPanic {
+				defer func() {
+					if r := recover(); r == nil {
+						t.Errorf("GCD(%d, %d): expected panic, but did not panic", tt.a, tt.b)
+					}
+				}()
+			}
 			result := GCD(tt.a, tt.b)
-			if result != tt.expect {
+			if !tt.expectPanic && result != tt.expect {
 				t.Errorf("GCD(%d, %d): expected %d, got %d", tt.a, tt.b, tt.expect, result)
 			}
 		})

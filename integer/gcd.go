@@ -15,13 +15,17 @@ func absUint(val int) uint {
 }
 
 // GCD returns the Greatest Common Divisor of two integers using the Euclidean algorithm.
-// The result is always non-negative, even if the inputs are negative or math.MinInt.
+// The result is always non-negative. If the result overflows the maximum signed integer
+// limit (e.g. GCD(math.MinInt, 0)), it panics.
 func GCD(a, b int) int {
 	ua := absUint(a)
 	ub := absUint(b)
 
 	for ub != 0 {
 		ua, ub = ub, ua%ub
+	}
+	if ua > math.MaxInt {
+		panic("gcd result overflows int")
 	}
 	return int(ua)
 }

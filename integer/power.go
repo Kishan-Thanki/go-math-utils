@@ -8,9 +8,6 @@ import (
 
 // overflowMul checks if multiplying x and y would result in integer overflow/underflow.
 func overflowMul(x, y int) bool {
-	if x == 0 || y == 0 {
-		return false
-	}
 	if x > 0 {
 		if y > 0 {
 			return x > math.MaxInt/y
