@@ -58,11 +58,14 @@ go mod init <your-module-name>
 go get github.com/Kishan-Thanki/go-math-utils
 ----
 
-. Import it:
+. Import the subpackages you need:
 +
 [source,go]
 ----
-import "github.com/Kishan-Thanki/go-math-utils/mathutils"
+import (
+	"github.com/Kishan-Thanki/go-math-utils/integer"
+	"github.com/Kishan-Thanki/go-math-utils/sequence"
+)
 ----
 
 == Usage
@@ -74,43 +77,44 @@ package main
 import (
 	"fmt"
 
-	"github.com/Kishan-Thanki/go-math-utils/mathutils"
+	"github.com/Kishan-Thanki/go-math-utils/integer"
+	"github.com/Kishan-Thanki/go-math-utils/sequence"
 )
 
 func main() {
 	// GCD — returns int
-	fmt.Println("GCD of 56 and 98:", mathutils.GCD(56, 98)) // 14
+	fmt.Println("GCD of 56 and 98:", integer.GCD(56, 98)) // 14
 
 	// LCM — returns (int, error)
-	if lcmVal, err := mathutils.LCM(56, 98); err == nil {
+	if lcmVal, err := integer.LCM(56, 98); err == nil {
 		fmt.Println("LCM of 56 and 98:", lcmVal) // 392
 	}
 
 	// Factorial — returns (int, error)
-	if factVal, err := mathutils.Factorial(5); err == nil {
+	if factVal, err := integer.Factorial(5); err == nil {
 		fmt.Println("Factorial of 5:", factVal) // 120
 	}
 
 	// IsPrime — returns bool
-	fmt.Println("Is 29 prime?", mathutils.IsPrime(29)) // true
+	fmt.Println("Is 29 prime?", integer.IsPrime(29)) // true
 
 	// Fibonacci — returns (int, error)
-	if fibVal, err := mathutils.Fibonacci(6); err == nil {
+	if fibVal, err := sequence.Fibonacci(6); err == nil {
 		fmt.Println("Fibonacci of 6:", fibVal) // 8
 	}
 
 	// Power — returns (int, error)
-	if powVal, err := mathutils.Power(2, 3); err == nil {
+	if powVal, err := integer.Power(2, 3); err == nil {
 		fmt.Println("2 raised to the power of 3:", powVal) // 8
 	}
 
 	// PrimeFactors — returns ([]int, error)
-	if factors, err := mathutils.PrimeFactors(56); err == nil {
+	if factors, err := integer.PrimeFactors(56); err == nil {
 		fmt.Println("Prime factors of 56:", factors) // [2 2 2 7]
 	}
 
 	// SumNaturalNumbers — returns (int, error)
-	if sumVal, err := mathutils.SumNaturalNumbers(5); err == nil {
+	if sumVal, err := sequence.SumNaturalNumbers(5); err == nil {
 		fmt.Println("Sum of first 5 natural numbers:", sumVal) // 15
 	}
 }

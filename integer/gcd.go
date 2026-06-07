@@ -1,5 +1,5 @@
 // gcd.go
-package mathutils
+package integer
 
 import "math"
 

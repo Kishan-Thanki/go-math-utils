@@ -1,5 +1,5 @@
 // fibonacci.go
-package mathutils
+package sequence
 
 import (
 	"fmt"

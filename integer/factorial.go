@@ -1,5 +1,5 @@
 // factorial.go
-package mathutils
+package integer
 
 import (
 	"errors"

@@ -1,5 +1,5 @@
 // sum.go
-package mathutils
+package sequence
 
 import (
 	"errors"

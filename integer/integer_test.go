@@ -1,5 +1,5 @@
-// utils_test.go
-package mathutils
+// integer_test.go
+package integer
 
 import (
 	"math"
@@ -139,43 +139,6 @@ func TestIsPrime(t *testing.T) {
 	}
 }
 
-func TestFibonacci(t *testing.T) {
-	// Dynamically set overflow input based on system bitness
-	var overflowN int
-	if math.MaxInt == math.MaxInt64 {
-		overflowN = 93
-	} else {
-		overflowN = 47
-	}
-
-	tests := []struct {
-		n      int
-		expect int
-		err    bool
-	}{
-		{6, 8, false},
-		{0, 0, false},
-		{1, 1, false},
-		{10, 55, false},
-		{-1, 0, true},
-		{-5, 0, true},
-		{overflowN, 0, true},
-	}
-
-	for _, tt := range tests {
-		t.Run("Fibonacci", func(t *testing.T) {
-			result, err := Fibonacci(tt.n)
-			if tt.err && err == nil {
-				t.Errorf("Fibonacci(%d): expected an error, but got nil", tt.n)
-			} else if !tt.err && err != nil {
-				t.Errorf("Fibonacci(%d): expected no error, but got %v", tt.n, err)
-			} else if !tt.err && result != tt.expect {
-				t.Errorf("Fibonacci(%d): expected %d, got %d", tt.n, tt.expect, result)
-			}
-		})
-	}
-}
-
 func TestPower(t *testing.T) {
 	tests := []struct {
 		a, b   int
@@ -241,34 +204,6 @@ func TestPrimeFactors(t *testing.T) {
 	}
 }
 
-func TestSumNaturalNumbers(t *testing.T) {
-	tests := []struct {
-		n      int
-		expect int
-		err    bool
-	}{
-		{5, 15, false},
-		{1, 1, false},
-		{10, 55, false},
-		{0, 0, false},
-		{-1, 0, true},
-		{math.MaxInt, 0, true}, // Will overflow
-	}
-
-	for _, tt := range tests {
-		t.Run("SumNaturalNumbers", func(t *testing.T) {
-			result, err := SumNaturalNumbers(tt.n)
-			if tt.err && err == nil {
-				t.Errorf("SumNaturalNumbers(%d): expected an error, but got nil", tt.n)
-			} else if !tt.err && err != nil {
-				t.Errorf("SumNaturalNumbers(%d): expected no error, but got %v", tt.n, err)
-			} else if !tt.err && result != tt.expect {
-				t.Errorf("SumNaturalNumbers(%d): expected %d, got %d", tt.n, tt.expect, result)
-			}
-		})
-	}
-}
-
 func BenchmarkGCD(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_ = GCD(123456789, 987654321)
@@ -293,12 +228,6 @@ func BenchmarkIsPrime(b *testing.B) {
 	}
 }
 
-func BenchmarkFibonacci(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		_, _ = Fibonacci(40)
-	}
-}
-
 func BenchmarkPower(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, _ = Power(3, 15)
@@ -308,11 +237,5 @@ func BenchmarkPower(b *testing.B) {
 func BenchmarkPrimeFactors(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, _ = PrimeFactors(12345678)
-	}
-}
-
-func BenchmarkSumNaturalNumbers(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		_, _ = SumNaturalNumbers(1000)
 	}
 }

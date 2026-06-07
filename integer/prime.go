@@ -1,5 +1,5 @@
 // prime.go
-package mathutils
+package integer
 
 import (
 	"fmt"
