@@ -159,3 +159,31 @@ func FuzzNthPrime(f *testing.F) {
 		}
 	})
 }
+
+func FuzzPerfectNumber(f *testing.F) {
+	f.Add(6)
+	f.Add(12)
+	f.Add(-6)
+	f.Fuzz(func(t *testing.T, n int) {
+		res := PerfectNumber(n)
+		if n <= 1 && res {
+			t.Fatalf("PerfectNumber(%d) returned true, but n <= 1", n)
+		}
+		if res {
+			divs, err := Divisors(n)
+			if err != nil {
+				t.Fatalf("PerfectNumber is true but Divisors failed for %d: %v", n, err)
+			}
+			var sum int
+			for _, d := range divs {
+				if d != n {
+					sum += d
+				}
+			}
+			if sum != n {
+				t.Fatalf("PerfectNumber is true but sum of proper divisors of %d is %d", n, sum)
+			}
+		}
+	})
+}
+

@@ -61,3 +61,52 @@ func BenchmarkMode_Large(b *testing.B) {
 		_, _ = Mode(slice)
 	}
 }
+
+func BenchmarkSumSlice_Small(b *testing.B) {
+	slice := generateSlice(10)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_, _ = SumSlice(slice)
+	}
+}
+
+func BenchmarkSumSlice_Large(b *testing.B) {
+	slice := generateSlice(1000)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_, _ = SumSlice(slice)
+	}
+}
+
+func BenchmarkMinSlice_Small(b *testing.B) {
+	slice := generateSlice(10)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_, _ = MinSlice(slice)
+	}
+}
+
+func BenchmarkMinSlice_Large(b *testing.B) {
+	slice := generateSlice(1000)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_, _ = MinSlice(slice)
+	}
+}
+
+func BenchmarkMaxSlice_Small(b *testing.B) {
+	slice := generateSlice(10)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_, _ = MaxSlice(slice)
+	}
+}
+
+func BenchmarkMaxSlice_Large(b *testing.B) {
+	slice := generateSlice(1000)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_, _ = MaxSlice(slice)
+	}
+}
+

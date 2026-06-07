@@ -110,3 +110,31 @@ func NthPrime[T Integer](n T) (T, error) {
 		candidate++
 	}
 }
+
+// PerfectNumber returns true if n is a perfect number.
+// A perfect number is a positive integer that is equal to the sum of its positive proper divisors.
+// (Proper divisors are positive divisors excluding the number itself).
+func PerfectNumber[T Integer](n T) bool {
+	if n <= 1 {
+		return false
+	}
+
+	divs, err := Divisors(n)
+	if err != nil {
+		return false
+	}
+
+	var sum T
+	for _, d := range divs {
+		if d == n {
+			continue
+		}
+		_, max := getLimits[T]()
+		if sum > max-d {
+			return false
+		}
+		sum += d
+	}
+	return sum == n
+}
+

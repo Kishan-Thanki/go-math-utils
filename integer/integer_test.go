@@ -416,6 +416,31 @@ func TestNthPrime(t *testing.T) {
 	})
 }
 
+func TestPerfectNumber(t *testing.T) {
+	tests := []struct {
+		n      int
+		expect bool
+	}{
+		{6, true},   // 1 + 2 + 3 = 6
+		{28, true},  // 1 + 2 + 4 + 7 + 14 = 28
+		{496, true},
+		{12, false},
+		{1, false},
+		{0, false},
+		{-6, false},
+	}
+
+	for _, tt := range tests {
+		t.Run("PerfectNumber", func(t *testing.T) {
+			res := PerfectNumber(tt.n)
+			if res != tt.expect {
+				t.Errorf("PerfectNumber(%d) = %v; want %v", tt.n, res, tt.expect)
+			}
+		})
+	}
+}
+
+
 func BenchmarkEulerTotient(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, _ = EulerTotient(1000)
@@ -439,4 +464,11 @@ func BenchmarkNthPrime(b *testing.B) {
 		_, _ = NthPrime(100)
 	}
 }
+
+func BenchmarkPerfectNumber(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = PerfectNumber(28)
+	}
+}
+
 

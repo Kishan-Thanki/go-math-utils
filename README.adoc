@@ -24,6 +24,8 @@ This package provides common mathematical functions — GCD, LCM, Factorial, Fib
 * *Divisors*: Sorted slice of all positive divisors, fully overflow-safe.
 * *NextPrime*: Smallest prime strictly greater than n, with overflow panic boundaries.
 * *NthPrime*: The n-th prime number, with error checking on bounds/overflow.
+* *PerfectNumber*: Checks if a number equals the sum of its positive proper divisors.
+* *Slice Utilities*: Generic, overflow-safe slice operations including `SumSlice`, `MinSlice`, and `MaxSlice`.
 
 == Performance
 
@@ -145,6 +147,9 @@ func main() {
 		fmt.Println("5th prime:", prime) // 11
 	}
 
+	// PerfectNumber — returns bool
+	fmt.Println("Is 28 perfect?", integer.PerfectNumber(28)) // true
+
 	// Numeric helpers
 	fmt.Println("Min of 10 and 20:", numeric.Min(10, 20)) // 10
 
@@ -152,6 +157,11 @@ func main() {
 	intSlice := []int{1, 3, 3, 2, 3, 4, 5}
 	avg, _ := stats.Average(intSlice)
 	fmt.Printf("Average of %v is %.2f\n", intSlice, avg) // 3.00
+
+	sum, _ := stats.SumSlice(intSlice)
+	min, _ := stats.MinSlice(intSlice)
+	max, _ := stats.MaxSlice(intSlice)
+	fmt.Printf("Sum: %d, Min: %d, Max: %d\n", sum, min, max) // 21, 1, 5
 }
 ----
 
@@ -172,6 +182,7 @@ func main() {
 | `Divisors` | `Divisors[T Integer](n T) ([]T, error)` | Returns sorted positive divisors of n; error if n == 0 or if divisors overflow T
 | `NextPrime` | `NextPrime[T Integer](n T) T` | Smallest prime strictly greater than n; panics if next prime overflows T
 | `NthPrime` | `NthPrime[T Integer](n T) (T, error)` | Returns the n-th prime; error if n ≤ 0 or if prime overflows T
+| `PerfectNumber` | `PerfectNumber[T Integer](n T) bool` | Returns true if n equals the sum of its positive proper divisors
 |===
 
 === `sequence` Package (Generic)
@@ -205,6 +216,9 @@ func main() {
 | `Average` | `Average[T IntegerOrFloat](slice []T) (float64, error)` | Returns the arithmetic mean; error if slice is empty
 | `Median` | `Median[T IntegerOrFloat](slice []T) (float64, error)` | Returns the median; error if slice is empty
 | `Mode` | `Mode[T cmp.Ordered](slice []T) (T, error)` | Returns the most frequent value; error if slice is empty
+| `SumSlice` | `SumSlice[T IntegerOrFloat](slice []T) (T, error)` | Returns the sum of slice elements; error on empty or overflow
+| `MinSlice` | `MinSlice[T cmp.Ordered](slice []T) (T, error)` | Returns the minimum element of a slice; error if empty
+| `MaxSlice` | `MaxSlice[T cmp.Ordered](slice []T) (T, error)` | Returns the maximum element of a slice; error if empty
 |===
 
 == Development

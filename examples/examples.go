@@ -79,13 +79,20 @@ func main() {
 	avgFloat, _ := stats.Average(floatSlice)
 	fmt.Printf("Avg of [1.5, 3.5, 2.5]: %.2f\n", avgFloat)
 
+	sumVal, _ := stats.SumSlice(intSlice)
+	minVal, _ := stats.MinSlice(intSlice)
+	maxVal, _ := stats.MaxSlice(intSlice)
+	fmt.Printf("Slice utilities: Sum: %d, Min: %d, Max: %d\n", sumVal, minVal, maxVal)
+
 	// Number Theory
 	phi, _ := integer.EulerTotient(9)
 	divs, _ := integer.Divisors(12)
 	nextP := integer.NextPrime(14)
 	nthP, _ := integer.NthPrime(5)
+	isPerf := integer.PerfectNumber(28)
 	fmt.Printf("EulerTotient(9): %d\n", phi)
 	fmt.Printf("Divisors(12): %v\n", divs)
 	fmt.Printf("NextPrime(14): %d\n", nextP)
 	fmt.Printf("5th Prime: %d\n", nthP)
+	fmt.Printf("Is 28 perfect? %v\n", isPerf)
 }

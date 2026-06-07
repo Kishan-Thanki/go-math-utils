@@ -76,3 +76,9 @@ func ExampleNthPrime() {
 	}
 	// Output: 11
 }
+
+func ExamplePerfectNumber() {
+	fmt.Println(integer.PerfectNumber(28))
+	// Output: true
+}
+
