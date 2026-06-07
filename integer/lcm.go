@@ -6,27 +6,31 @@ import (
 	"math"
 )
 
-// LCM returns the Least Common Multiple of two integers.
-// If both numbers are 0, it returns 0. If the calculation would overflow the integer limit, it returns an error.
-func LCM(a, b int) (int, error) {
+// LCM returns the Least Common Multiple of two generic integers.
+// If both numbers are 0, it returns 0. If the calculation would overflow the limits of type T, it returns an error.
+func LCM[T Integer](a, b T) (T, error) {
 	if a == 0 || b == 0 {
-		return 0, nil
+		var zero T
+		return zero, nil
 	}
 
 	gcd := GCD(a, b)
-	ua := absUint(a)
-	ub := absUint(b)
-	ugcd := uint(gcd)
+	ua := absUint64(a)
+	ub := absUint64(b)
+	ugcd := uint64(gcd)
 
 	// Avoid overflow: (ua / ugcd) * ub
 	temp := ua / ugcd
-	if ub > 0 && temp > math.MaxUint/ub {
-		return 0, errors.New("lcm overflows int")
+	if ub > 0 && temp > math.MaxUint64/ub {
+		var zero T
+		return zero, errors.New("lcm overflows type")
 	}
 	result := temp * ub
-	if result > uint(math.MaxInt) {
-		return 0, errors.New("lcm overflows int")
+	// Check for overflow
+	if uint64(T(result)) != result || T(result) < 0 {
+		var zero T
+		return zero, errors.New("lcm overflows type")
 	}
 
-	return int(result), nil
+	return T(result), nil
 }

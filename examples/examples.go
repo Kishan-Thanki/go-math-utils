@@ -6,11 +6,13 @@ import (
 	"github.com/Kishan-Thanki/go-math-utils/integer"
 	"github.com/Kishan-Thanki/go-math-utils/numeric"
 	"github.com/Kishan-Thanki/go-math-utils/sequence"
+	"github.com/Kishan-Thanki/go-math-utils/stats"
 )
 
 func main() {
 	// GCD (Greatest Common Divisor)
 	fmt.Println("GCD of 56 and 98:", integer.GCD(56, 98)) // Should print 14
+	fmt.Println("GCD of int8(12) and int8(18):", integer.GCD(int8(12), int8(18))) // Should print 6
 
 	// LCM (Least Common Multiple)
 	if lcmVal, err := integer.LCM(56, 98); err != nil {
@@ -20,20 +22,20 @@ func main() {
 	}
 
 	// Factorial
-	if factVal, err := integer.Factorial(5); err != nil {
+	if factVal, err := integer.Factorial(int16(5)); err != nil {
 		fmt.Println("Error calculating factorial:", err)
 	} else {
-		fmt.Println("Factorial of 5:", factVal) // Should print 120
+		fmt.Println("Factorial of int16(5):", factVal) // Should print 120
 	}
 
 	// Prime Number Check
 	fmt.Println("Is 29 prime?", integer.IsPrime(29)) // Should print true
 
 	// Fibonacci Sequence
-	if fibVal, err := sequence.Fibonacci(6); err != nil {
+	if fibVal, err := sequence.Fibonacci(uint32(6)); err != nil {
 		fmt.Println("Error calculating Fibonacci:", err)
 	} else {
-		fmt.Println("Fibonacci of 6:", fibVal) // Should print 8
+		fmt.Println("Fibonacci of uint32(6):", fibVal) // Should print 8
 	}
 
 	// Power function
@@ -65,4 +67,15 @@ func main() {
 	fmt.Println("Sign of -15:", numeric.Sign(-15))                  // Should print -1
 	fmt.Println("Is 4 even?", numeric.IsEven(4))                    // Should print true
 	fmt.Println("Is 4 odd?", numeric.IsOdd(4))                      // Should print false
+
+	// Stats Package
+	intSlice := []int{1, 3, 3, 2, 3, 4, 5}
+	avg, _ := stats.Average(intSlice)
+	med, _ := stats.Median(intSlice)
+	mode, _ := stats.Mode(intSlice)
+	fmt.Printf("Stats on [1, 3, 3, 2, 3, 4, 5]: Avg: %.2f, Median: %.1f, Mode: %d\n", avg, med, mode)
+
+	floatSlice := []float64{1.5, 3.5, 2.5}
+	avgFloat, _ := stats.Average(floatSlice)
+	fmt.Printf("Avg of [1.5, 3.5, 2.5]: %.2f\n", avgFloat)
 }

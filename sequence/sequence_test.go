@@ -82,3 +82,17 @@ func BenchmarkSumNaturalNumbers(b *testing.B) {
 		_, _ = SumNaturalNumbers(1000)
 	}
 }
+
+func TestGenericTypes(t *testing.T) {
+	// Test Fibonacci with int16
+	var n16 int16 = 10
+	if res, err := Fibonacci(n16); err != nil || res != 55 {
+		t.Errorf("Fibonacci(int16(10)) = (%v, %v); want (55, nil)", res, err)
+	}
+
+	// Test SumNaturalNumbers with uint32
+	var nu32 uint32 = 10
+	if res, err := SumNaturalNumbers(nu32); err != nil || res != 55 {
+		t.Errorf("SumNaturalNumbers(uint32(10)) = (%v, %v); want (55, nil)", res, err)
+	}
+}

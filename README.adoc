@@ -65,7 +65,9 @@ go get github.com/Kishan-Thanki/go-math-utils
 ----
 import (
 	"github.com/Kishan-Thanki/go-math-utils/integer"
+	"github.com/Kishan-Thanki/go-math-utils/numeric"
 	"github.com/Kishan-Thanki/go-math-utils/sequence"
+	"github.com/Kishan-Thanki/go-math-utils/stats"
 )
 ----
 
@@ -79,70 +81,80 @@ import (
 	"fmt"
 
 	"github.com/Kishan-Thanki/go-math-utils/integer"
+	"github.com/Kishan-Thanki/go-math-utils/numeric"
 	"github.com/Kishan-Thanki/go-math-utils/sequence"
+	"github.com/Kishan-Thanki/go-math-utils/stats"
 )
 
 func main() {
-	// GCD — returns int
-	fmt.Println("GCD of 56 and 98:", integer.GCD(56, 98)) // 14
+	// GCD — returns generic type
+	fmt.Println("GCD of int8(12) and int8(18):", integer.GCD(int8(12), int8(18))) // 6
 
-	// LCM — returns (int, error)
+	// LCM — returns generic type
 	if lcmVal, err := integer.LCM(56, 98); err == nil {
 		fmt.Println("LCM of 56 and 98:", lcmVal) // 392
 	}
 
-	// Factorial — returns (int, error)
-	if factVal, err := integer.Factorial(5); err == nil {
-		fmt.Println("Factorial of 5:", factVal) // 120
+	// Factorial — generic type
+	if factVal, err := integer.Factorial(int16(5)); err == nil {
+		fmt.Println("Factorial of int16(5):", factVal) // 120
 	}
 
 	// IsPrime — returns bool
 	fmt.Println("Is 29 prime?", integer.IsPrime(29)) // true
 
-	// Fibonacci — returns (int, error)
-	if fibVal, err := sequence.Fibonacci(6); err == nil {
-		fmt.Println("Fibonacci of 6:", fibVal) // 8
+	// Fibonacci — returns generic type
+	if fibVal, err := sequence.Fibonacci(uint32(6)); err == nil {
+		fmt.Println("Fibonacci of uint32(6):", fibVal) // 8
 	}
 
-	// Power — returns (int, error)
+	// Power — returns generic type
 	if powVal, err := integer.Power(2, 3); err == nil {
 		fmt.Println("2 raised to the power of 3:", powVal) // 8
 	}
 
-	// PrimeFactors — returns ([]int, error)
+	// PrimeFactors — returns generic slice
 	if factors, err := integer.PrimeFactors(56); err == nil {
 		fmt.Println("Prime factors of 56:", factors) // [2 2 2 7]
 	}
 
-	// SumNaturalNumbers — returns (int, error)
+	// SumNaturalNumbers — returns generic type
 	if sumVal, err := sequence.SumNaturalNumbers(5); err == nil {
 		fmt.Println("Sum of first 5 natural numbers:", sumVal) // 15
 	}
+
+	// Numeric helpers
+	fmt.Println("Min of 10 and 20:", numeric.Min(10, 20)) // 10
+
+	// Stats slice calculations
+	intSlice := []int{1, 3, 3, 2, 3, 4, 5}
+	avg, _ := stats.Average(intSlice)
+	fmt.Printf("Average of %v is %.2f\n", intSlice, avg) // 3.00
 }
 ----
 
 == API Reference
 
-=== `integer` Package
+=== `integer` Package (Generic)
 
 [cols="1,2,2", options="header"]
 |===
 | Function | Signature | Notes
-| `GCD` | `GCD(a, b int) int` | Always non-negative; panics on overflow (e.g. `math.MinInt`, `0`)
-| `LCM` | `LCM(a, b int) (int, error)` | Returns `(0, nil)` if either input is 0
-| `Factorial` | `Factorial(n int) (int, error)` | Error if n < 0 or result overflows
-| `IsPrime` | `IsPrime(n int) bool` | Overflow-safe for primes near `math.MaxInt`
-| `Power` | `Power(a, b int) (int, error)` | Error if b < 0 or result overflows
-| `PrimeFactors` | `PrimeFactors(n int) ([]int, error)` | Error if n ≤ 1
+| `GCD` | `GCD[T Integer](a, b T) T` | Always non-negative; panics on overflow (e.g. `MinInt`, `0`)
+| `LCM` | `LCM[T Integer](a, b T) (T, error)` | Returns `(0, nil)` if either input is 0
+| `Factorial` | `Factorial[T Integer](n T) (T, error)` | Error if n < 0 or result overflows bounds of T
+| `IsPrime` | `IsPrime[T Integer](n T) bool` | Overflow-safe for primes near bounds of T
+| `Power` | `Power[T Integer](a, b T) (T, error)` | Error if b < 0 or result overflows bounds of T
+| `PrimeFactors` | `PrimeFactors[T Integer](n T) ([]T, error)` | Error if n ≤ 1
 |===
 
-=== `sequence` Package
+=== `sequence` Package (Generic)
 
 [cols="1,2,2", options="header"]
 |===
 | Function | Signature | Notes
-| `Fibonacci` | `Fibonacci(n int) (int, error)` | Error if n < 0 or result overflows
-| `SumNaturalNumbers` | `SumNaturalNumbers(n int) (int, error)` | Error if n < 0 or result overflows
+| `Fibonacci` | `Fibonacci[T Integer](n T) (T, error)` | Error if n < 0 or result overflows bounds of T
+| `SumNaturalNumbers` | `SumNaturalNumbers[T Integer](n T) (T, error)` | Error if n < 0 or result overflows bounds of T
 |===
 
 === `numeric` Package (Generic)
@@ -157,6 +169,16 @@ func main() {
 | `Sign` | `Sign[T SignedOrFloat](x T) int` | Returns -1 (negative), 0 (zero), or 1 (positive)
 | `IsEven` | `IsEven[T Integer](x T) bool` | Returns true if x is even
 | `IsOdd` | `IsOdd[T Integer](x T) bool` | Returns true if x is odd
+|===
+
+=== `stats` Package (Generic)
+
+[cols="1,2,2", options="header"]
+|===
+| Function | Signature | Notes
+| `Average` | `Average[T IntegerOrFloat](slice []T) (float64, error)` | Returns the arithmetic mean; error if slice is empty
+| `Median` | `Median[T IntegerOrFloat](slice []T) (float64, error)` | Returns the median; error if slice is empty
+| `Mode` | `Mode[T cmp.Ordered](slice []T) (T, error)` | Returns the most frequent value; error if slice is empty
 |===
 
 == Development

@@ -248,3 +248,29 @@ func BenchmarkPrimeFactors(b *testing.B) {
 		_, _ = PrimeFactors(12345678)
 	}
 }
+
+func TestGenericTypes(t *testing.T) {
+	// Test GCD with int8
+	var a8, b8 int8 = 12, 18
+	if res := GCD(a8, b8); res != 6 {
+		t.Errorf("GCD(int8(12), int8(18)) = %d; want 6", res)
+	}
+
+	// Test GCD with uint32
+	var au32, bu32 uint32 = 40, 60
+	if res := GCD(au32, bu32); res != 20 {
+		t.Errorf("GCD(uint32(40), uint32(60)) = %d; want 20", res)
+	}
+
+	// Test Factorial with int16
+	var n16 int16 = 5
+	if res, err := Factorial(n16); err != nil || res != 120 {
+		t.Errorf("Factorial(int16(5)) = (%v, %v); want (120, nil)", res, err)
+	}
+
+	// Test Power with uint64
+	var base, exp uint64 = 2, 10
+	if res, err := Power(base, exp); err != nil || res != 1024 {
+		t.Errorf("Power(uint64(2), uint64(10)) = (%v, %v); want (1024, nil)", res, err)
+	}
+}

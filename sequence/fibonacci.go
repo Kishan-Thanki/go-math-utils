@@ -3,34 +3,48 @@ package sequence
 
 import (
 	"fmt"
-	"math"
 )
 
-// maxFibonacciN holds the maximum input value for Fibonacci that will not cause integer overflow.
-var maxFibonacciN int
+// Integer represents all signed and unsigned integer types.
+type Integer interface {
+	~int | ~int8 | ~int16 | ~int32 | ~int64 |
+		~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr
+}
 
-func init() {
-	if math.MaxInt == math.MaxInt64 {
-		maxFibonacciN = 92
-	} else {
-		maxFibonacciN = 46
+// getLimits returns the minimum and maximum representable values for any generic Integer type.
+func getLimits[T Integer]() (min T, max T) {
+	var zero T
+	minusOne := zero - 1
+	isSigned := minusOne < 0
+	if !isSigned {
+		return 0, ^T(0)
 	}
+	temp := T(1)
+	for temp > 0 {
+		temp <<= 1
+	}
+	min = temp
+	max = ^min
+	return min, max
 }
 
 // Fibonacci returns the nth Fibonacci number using an iterative approach.
-// If n is negative or if the calculation would overflow the integer limit, it returns an error.
-func Fibonacci(n int) (int, error) {
+// If n is negative or if the calculation would overflow the limits of type T, it returns an error.
+func Fibonacci[T Integer](n T) (T, error) {
 	if n < 0 {
-		return 0, fmt.Errorf("fibonacci index %d is negative", n)
-	}
-	if n > maxFibonacciN {
-		return 0, fmt.Errorf("fibonacci of %d overflows int", n)
+		var zero T
+		return zero, fmt.Errorf("fibonacci index %v is negative", n)
 	}
 	if n <= 1 {
 		return n, nil
 	}
-	a, b := 0, 1
-	for i := 2; i <= n; i++ {
+	_, max := getLimits[T]()
+	a, b := T(0), T(1)
+	for i := T(2); i <= n; i++ {
+		if a > max-b {
+			var zero T
+			return zero, fmt.Errorf("fibonacci of %v overflows type", n)
+		}
 		a, b = b, a+b
 	}
 	return b, nil
