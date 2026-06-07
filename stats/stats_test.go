@@ -230,4 +230,3 @@ func TestMaxSlice(t *testing.T) {
 		t.Errorf("MaxSlice([banana,apple,cherry]) = (%v, %v); want (cherry, nil)", resStr, err)
 	}
 }
-

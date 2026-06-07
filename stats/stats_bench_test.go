@@ -109,4 +109,3 @@ func BenchmarkMaxSlice_Large(b *testing.B) {
 		_, _ = MaxSlice(slice)
 	}
 }
-

@@ -53,4 +53,3 @@ func ExampleMaxSlice() {
 	}
 	// Output: 9
 }
-

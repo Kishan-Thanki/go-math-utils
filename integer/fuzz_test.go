@@ -186,4 +186,3 @@ func FuzzPerfectNumber(f *testing.F) {
 		}
 	})
 }
-

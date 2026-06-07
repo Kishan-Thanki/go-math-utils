@@ -11,7 +11,7 @@ import (
 
 func main() {
 	// GCD (Greatest Common Divisor)
-	fmt.Println("GCD of 56 and 98:", integer.GCD(56, 98)) // Should print 14
+	fmt.Println("GCD of 56 and 98:", integer.GCD(56, 98))                         // Should print 14
 	fmt.Println("GCD of int8(12) and int8(18):", integer.GCD(int8(12), int8(18))) // Should print 6
 
 	// LCM (Least Common Multiple)

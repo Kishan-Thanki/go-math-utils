@@ -421,8 +421,8 @@ func TestPerfectNumber(t *testing.T) {
 		n      int
 		expect bool
 	}{
-		{6, true},   // 1 + 2 + 3 = 6
-		{28, true},  // 1 + 2 + 4 + 7 + 14 = 28
+		{6, true},  // 1 + 2 + 3 = 6
+		{28, true}, // 1 + 2 + 4 + 7 + 14 = 28
 		{496, true},
 		{12, false},
 		{1, false},
@@ -439,7 +439,6 @@ func TestPerfectNumber(t *testing.T) {
 		})
 	}
 }
-
 
 func BenchmarkEulerTotient(b *testing.B) {
 	for i := 0; i < b.N; i++ {
@@ -470,5 +469,3 @@ func BenchmarkPerfectNumber(b *testing.B) {
 		_ = PerfectNumber(28)
 	}
 }
-
-

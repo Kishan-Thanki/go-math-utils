@@ -154,5 +154,3 @@ func FuzzMaxSlice(f *testing.F) {
 		}
 	})
 }
-
-

@@ -12,7 +12,7 @@ type Integer interface {
 // absUint64 returns the absolute value of any generic integer as a uint64.
 func absUint64[T Integer](val T) uint64 {
 	if val < 0 {
-		// Cast val to int64 first. This avoids negative wrap-around issues 
+		// Cast val to int64 first. This avoids negative wrap-around issues
 		// when converting smaller signed types (like int8(-128)) directly to uint64.
 		v64 := int64(val)
 		if v64 == math.MinInt64 {
@@ -36,7 +36,7 @@ func GCD[T Integer](a, b T) T {
 	for ub != 0 {
 		ua, ub = ub, ua%ub
 	}
-	// Check for overflow: if ua overflows the storage of T, casting it to T and back to uint64 
+	// Check for overflow: if ua overflows the storage of T, casting it to T and back to uint64
 	// yields a different value, or T(ua) becomes negative (for signed types).
 	if uint64(T(ua)) != ua || T(ua) < 0 {
 		panic("gcd result overflows type")

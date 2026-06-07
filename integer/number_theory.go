@@ -137,4 +137,3 @@ func PerfectNumber[T Integer](n T) bool {
 	}
 	return sum == n
 }
-
