@@ -49,3 +49,36 @@ func FuzzMedian(f *testing.F) {
 		}
 	})
 }
+
+func FuzzMode(f *testing.F) {
+	f.Add([]byte{1, 2, 3, 3})
+	f.Fuzz(func(t *testing.T, data []byte) {
+		slice := make([]int, len(data))
+		for i, v := range data {
+			slice[i] = int(v)
+		}
+		res, err := Mode(slice)
+		if len(slice) == 0 {
+			if err == nil {
+				t.Fatalf("Mode of empty slice did not return error")
+			}
+			return
+		}
+		if err != nil {
+			t.Fatalf("Mode failed unexpectedly: %v", err)
+		}
+
+		// Verify that the result is actually an element of the slice
+		found := false
+		for _, v := range slice {
+			if v == res {
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Fatalf("Mode returned %d which is not present in slice %v", res, slice)
+		}
+	})
+}
+

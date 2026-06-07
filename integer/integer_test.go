@@ -415,3 +415,28 @@ func TestNthPrime(t *testing.T) {
 		}
 	})
 }
+
+func BenchmarkEulerTotient(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, _ = EulerTotient(1000)
+	}
+}
+
+func BenchmarkDivisors(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, _ = Divisors(1000)
+	}
+}
+
+func BenchmarkNextPrime(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_ = NextPrime(1000)
+	}
+}
+
+func BenchmarkNthPrime(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, _ = NthPrime(100)
+	}
+}
+
