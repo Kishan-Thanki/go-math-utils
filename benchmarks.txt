@@ -1,0 +1,57 @@
+?   	github.com/kishan-thanki/go-math-utils/examples	[no test files]
+goos: darwin
+goarch: arm64
+pkg: github.com/kishan-thanki/go-math-utils/integer
+cpu: Apple M2
+BenchmarkGCD-8             	320853898	         3.555 ns/op	       0 B/op	       0 allocs/op
+BenchmarkLCM-8             	201747667	         5.915 ns/op	       0 B/op	       0 allocs/op
+BenchmarkFactorial-8       	100000000	        11.38 ns/op	       0 B/op	       0 allocs/op
+BenchmarkIsPrime-8         	127151811	         9.217 ns/op	       0 B/op	       0 allocs/op
+BenchmarkPower-8           	 8164335	       147.7 ns/op	       0 B/op	       0 allocs/op
+BenchmarkPrimeFactors-8    	 6574798	       208.2 ns/op	      64 B/op	       1 allocs/op
+BenchmarkEulerTotient-8    	81239580	        15.20 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDivisors-8        	 6796658	       165.3 ns/op	     248 B/op	       5 allocs/op
+BenchmarkNextPrime-8       	37277739	        33.76 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNthPrime-8        	 1862352	       661.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkPerfectNumber-8   	 6311605	       188.8 ns/op	     120 B/op	       4 allocs/op
+PASS
+ok  	github.com/kishan-thanki/go-math-utils/integer	17.782s
+goos: darwin
+goarch: arm64
+pkg: github.com/kishan-thanki/go-math-utils/numeric
+cpu: Apple M2
+BenchmarkMin-8      	1000000000	         0.2968 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMax-8      	1000000000	         0.2936 ns/op	       0 B/op	       0 allocs/op
+BenchmarkClamp-8    	1000000000	         0.2942 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAbs-8      	1000000000	         0.2929 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSign-8     	1000000000	         0.2932 ns/op	       0 B/op	       0 allocs/op
+BenchmarkIsEven-8   	1000000000	         0.2954 ns/op	       0 B/op	       0 allocs/op
+BenchmarkIsOdd-8    	1000000000	         0.2971 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	github.com/kishan-thanki/go-math-utils/numeric	2.562s
+goos: darwin
+goarch: arm64
+pkg: github.com/kishan-thanki/go-math-utils/sequence
+cpu: Apple M2
+BenchmarkFibonacci-8           	36439684	        34.61 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSumNaturalNumbers-8   	49575261	        20.90 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	github.com/kishan-thanki/go-math-utils/sequence	4.193s
+goos: darwin
+goarch: arm64
+pkg: github.com/kishan-thanki/go-math-utils/stats
+cpu: Apple M2
+BenchmarkAverage_Small-8    	279100976	         4.099 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAverage_Large-8    	 3968842	       306.4 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMedian_Small-8     	25984290	        44.28 ns/op	      80 B/op	       1 allocs/op
+BenchmarkMedian_Large-8     	  160844	      7472 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkMode_Small-8       	 4512129	       268.2 ns/op	     328 B/op	       3 allocs/op
+BenchmarkMode_Large-8       	   83829	     14336 ns/op	    4456 B/op	       9 allocs/op
+BenchmarkSumSlice_Small-8   	86006862	        13.97 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSumSlice_Large-8   	  977980	      1367 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMinSlice_Small-8   	313146850	         3.829 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMinSlice_Large-8   	 4017493	       300.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMaxSlice_Small-8   	307105984	         4.010 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMaxSlice_Large-8   	 3957836	       298.2 ns/op	       0 B/op	       0 allocs/op
+PASS
+ok  	github.com/kishan-thanki/go-math-utils/stats	17.436s
